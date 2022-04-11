@@ -55,7 +55,7 @@ module.exports={
         }).catch((err)=>{console.log(err)})
     },
     findAllUsers:(req,res)=>{
-        User.find().then((allUsers)=>{
+        User.find({}).sort({username:-1}).then((allUsers)=>{
             console.log(allUsers)
             res.json(allUsers);
         }).catch((err)=>{res.json({message:"error in findAll", error:err})});
