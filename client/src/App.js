@@ -6,6 +6,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import Register from './components/Register';
 import Home from './components/Home';
 import Login from './components/Login';
+import UploadVid from './components/UploadVid';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Register/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/upload" element={<UploadVid/>}/>
       </Routes>
     </BrowserRouter>
   );
