@@ -7,6 +7,11 @@ import Register from './components/Register';
 import Home from './components/Home';
 import Login from './components/Login';
 import UploadVid from './components/UploadVid';
+import Tags from './components/Tags';
+import SearchResults from './components/SearchResults';
+import VideoPlayer from './components/VideoPlayer';
+import EditVideo from './components/EditVideo';
+
 
 function App() {
   return (
@@ -16,6 +21,11 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/upload" element={<UploadVid/>}/>
+        <Route path="/tags/:id" element={<Tags/>}/>
+        <Route path="/results/:item" element={<SearchResults/>}/>
+        <Route path="video/:id" element={<VideoPlayer/>}/>
+        <Route path="/edit/:id" element={<EditVideo/>}/>
+       
       </Routes>
     </BrowserRouter>
   );

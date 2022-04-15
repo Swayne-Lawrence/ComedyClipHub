@@ -39,3 +39,59 @@
 .hide{
   visibility: hidden;
 }
+
+#mainContainer{
+  margin: 0px auto;
+  display: flex;
+  background-color: aqua;
+  justify-content: center;
+  height: 1000px;
+  
+}
+#mainContainerReg{
+  margin: 0px auto;
+  display: flex;
+  background-color: steelblue;
+  justify-content: center;
+  height: 2000px;
+  
+}
+#headerContainer{
+  width: 1000px;
+}
+
+#headerTitle{
+  font-size:200%
+}
+
+#comedyLogo{
+  height: 100px;
+}
+#comedyLogoReg{
+  height: 200px;
+  position: relative;
+  left: 170px;
+}
+#headerDrop{
+position: fixed;
+left: 830px;
+right:0px;
+bottom: 0px;
+top:80px;
+width: 100px;
+height: 100px;
+}
+#uploadButton{
+  margin-right: 60px;
+  color: white;
+}
+#regForm{
+  position: relative;
+  top: 400px;
+  right: 260px;
+  width: 270px;
+}
+#regClips{
+  position: relative;
+  left: 110px;
+}

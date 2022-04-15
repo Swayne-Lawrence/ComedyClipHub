@@ -11,6 +11,16 @@ const Register=(props)=>{
         profilePic:""
     }
     )
+    const [logged,setLogged]=useState({})
+
+    useEffect(()=>{
+        axios.get("http://localhost:8000/api/users/logged",{withCredentials:true}).then((res)=>{
+            console.log(res.data);
+            setLogged(res.data);
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },[])
 
     const navi= useNavigate();
 
@@ -49,57 +59,98 @@ const Register=(props)=>{
     }
 
     return(
-        <div>
-            <form onSubmit={(e)=>{submitHandler(e)}}>
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username" value={user.username} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        error.username?
-                        <p style={{color:"red"}}>{error.username.message}</p>:
-                        null
-                    }   
+        <div id="mainContainerReg">
+            <div id="regClips">
+            <h1 style={{
+                        fontSize:60,
+                        color:"goldenrod"
+                                }}>
+                                    Comedy Clips Hub</h1>
+            <img id="comedyLogoReg" src="https://cdn2.iconfinder.com/data/icons/theater-stage-performers/287/artist-show-performance-006-512.png"/>
+            </div>
+            {!logged._id?
+            <form id="regForm" onSubmit={(e)=>{submitHandler(e)}}>
+                {
+                    !error.username?
+                <div className="form-floating mb-3">
+                    
+                    <input type="text" className="form-control" id="floatingInput" placeholder="Username" name="username" value={user.username} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Username:</span></label>
+                    
+                        
             
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="text" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Username" name="username" value={user.username} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Invalid Username</span></label>
                 </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" name="email" value={user.email} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        error.email?
-                        <p style={{color:"red"}}>{error.email.message}</p>:
-                        null
-                    }   
+                }
+                {
+                    !error.email?
+                <div className="form-floating mb-3">
+                    
+                    <input type="email" className="form-control" id="floatingInput" placeholder="Email" name="email" value={user.email} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Email:</span></label>
+                    
+                        
+            
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="email" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Email" name="email" value={user.email} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Invalid Email</span></label>
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" value={user.password} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        error.password?
-                        <p style={{color:"red"}}>{error.password.message}</p>:
-                        null
-                    }   
+                }
+ {
+                    !error.password?
+                <div className="form-floating mb-3">
+                    
+                    <input type="password" className="form-control" id="floatingInput" placeholder="Password" name="password" value={user.password} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Password:</span></label>
+                    
+                        
+            
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="passpassword" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Password" name="password" value={user.password} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Invalid Password</span></label>
                 </div>
-                <div>
-                    <label>Confirm Password:</label>
-                    <input type="password" name="confirmPassword" value={user.confirmPassword} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        error.confirmPassword?
-                        <p style={{color:"red"}}>{error.confirmPassword.message}</p>:
-                        null
-                    }   
+                }
+ {
+                    !error.confirmPassword?
+                <div className="form-floating mb-3">
+                    
+                    <input type="password" className="form-control" id="floatingInput" placeholder="Confirm Password" name="confirmPassword" value={user.confirmPassword} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Confirm Password:</span></label>
+                    
+                        
+            
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="password" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Confirm Password" name="confirmPassword" value={user.confirmPassword} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Must match password</span></label>
                 </div>
-                <div>
-                    <label>Profile Picture:</label>
-                    <input type="text" name="profilePic" value={user.profilePic} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        error.profilePic?
-                        <p style={{color:"red"}}>{error.profilePic.message}</p>:
-                        null
-                    }   
+                }
+ {
+                    !error.profilePic?
+                <div className="form-floating mb-3">
+                    
+                    <input type="text" className="form-control" id="floatingInput" placeholder="Profile Picture" name="profilePic" value={user.profilePic} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Profile Picture:</span></label>
+                    
+                        
+            
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="text" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Profile Picture" name="profilePic" value={user.profilePic} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Please enter a valid link</span></label>
                 </div>
+                }
                 
-                <button type="submit">Register</button>
+                <button className="btn btn-dark" type="submit">Register</button>
             </form>
+            :
+            navi("/home")
+            }
         </div>
     )
 

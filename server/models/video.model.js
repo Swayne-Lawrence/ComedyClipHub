@@ -13,11 +13,22 @@ const VideoSch= new mongoose.Schema({
 
     },
     comedian:{
-        type:String
+        type:String,
+        required:[true,"Please enter the name of the comedian"],
+        minlength:[3,"Please enter the name of the comedian"]
     },
     videoURL:{
         type:String,
         minlength:[10,"Please enter proper video url"]
+    },
+    tags:{
+        type:[]
+    },
+    titleTag:{
+        type:String
+    },
+    selectedTag:{
+        type:String
     }
 
 },{timestamps:true})

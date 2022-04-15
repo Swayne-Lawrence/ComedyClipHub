@@ -2,10 +2,11 @@ const Video=require("../models/video.model");
 
 module.exports={
     findAllVideos: (req,res)=>{
-        Video.find().then((allVideos)=>{
+        Video.find().sort({createdAt:-1}).then((allVideos)=>{
             console.log(allVideos);
             res.json(allVideos);
         }).catch((err)=>{res.json({message:"error in findAAllVideos", error:err})})
+        
     },
     createVideo: (req,res)=>{
         Video.create(req.body).then((newVid)=>{
@@ -40,5 +41,26 @@ module.exports={
             console.log(err);
             res.status(400).json(err);
         });
-    }
+    },
+    findAllVideosByComedian: (req,res)=>{
+        Video.find({comedian: req.params.item}).sort({createdAt:-1}).then((allVideos)=>{
+            console.log(allVideos);
+            res.json(allVideos);
+        }).catch((err)=>{res.json({message:"error in findAAllVideos", error:err})})
+        
+    },
+    findAllVideosByTitle: (req,res)=>{
+        Video.find({titleTag: req.params.item}).sort({createdAt:-1}).then((allVideos)=>{
+            console.log(allVideos);
+            res.json(allVideos);
+        }).catch((err)=>{res.json({message:"error in findAAllVideos", error:err})})
+        
+    },
+    findAllVideosByTags: (req,res)=>{
+        Video.find({selectedTag: req.params.item}).sort({createdAt:-1}).then((allVideos)=>{
+            console.log(allVideos);
+            res.json(allVideos);
+        }).catch((err)=>{res.json({message:"error in findAAllVideos", error:err})})
+        
+    },
 }

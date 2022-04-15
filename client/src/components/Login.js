@@ -7,6 +7,17 @@ const Login=(props)=>{
     const [email,setEmail]=useState("");
     const[password,setPassword]=useState("");
     const [errors, setError] = useState("");
+
+    const [logged,setLogged]=useState({})
+
+    useEffect(()=>{
+        axios.get("http://localhost:8000/api/users/logged",{withCredentials:true}).then((res)=>{
+            console.log(res.data);
+            setLogged(res.data);
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },[])
     
     const navi = useNavigate();
     
@@ -25,6 +36,7 @@ const Login=(props)=>{
 
     return(
         <div>
+            {!logged._id?
             <form onSubmit={(e)=>{submitHandler(e)}}> 
                 {errors? 
                     <p style={{color:"red"}}>{errors}</p>:null}
@@ -38,6 +50,9 @@ const Login=(props)=>{
                 </div>
                 <button type="submit">Login</button>
             </form>
+            :
+            navi("/home")
+            }
         </div>
     )
 }
