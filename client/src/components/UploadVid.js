@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import {useNavigate,Link} from "react-router-dom";
+import Header from "./Header";
 
 const UploadVid= (props)=>{
-    const[user,setUser]=useState({});
+    const[logged,setLogged]=useState({});
     const [errors,setErrors]=useState({});
 
     const navi=useNavigate();
@@ -12,7 +13,7 @@ const UploadVid= (props)=>{
     useEffect(()=>{
         axios.get("http://localhost:8000/api/users/logged",{withCredentials:true}).then((res)=>{
             console.log(res.data);
-            setUser(res.data);
+            setLogged(res.data);
         }).catch((err)=>{
             console.log(err)
         })
@@ -49,16 +50,18 @@ const UploadVid= (props)=>{
                 ...video,
                 comedian: (first+" "+ last).toLowerCase(),
                 videoURL:video.videoURL.slice(32,video.videoURL.length),
-                createdBy: user._id,
-                titleTag:video.title.toLowerCase()
+                createdBy: logged._id,
+                titleTag:video.title.toLowerCase(),
+                username:logged.username
             })
         }else{
                     setVideo({
             ...video,
             comedian: (first+" "+ last).toLowerCase(),
             videoURL:video.videoURL.slice(17,video.videoURL.length),
-            createdBy: user._id,
-            titleTag:video.title.toLowerCase()
+            createdBy: logged._id,
+            titleTag:video.title.toLowerCase(),
+            username:logged.username
         })
         }
         
@@ -84,55 +87,105 @@ const UploadVid= (props)=>{
     }
 
     return(
-        <div >
+        <div id="mainContainer">
         {  
-            user._id?
-        <form  onSubmit={(e)=>{submitHandler(e)}}>
+            logged._id?
+            <div style={{height:1000}}> 
+                <Header logged={logged}/>
+        <form id="uploadForm" onSubmit={(e)=>{submitHandler(e)}}>
+            <h2 style={{color:"white"}}>Video info</h2>
             
-                <div>
-                    <label>Title:</label>
-                    <input type="text" name="title" value={video.title} onChange={(e)=>{inputHandler(e)}}/>
-                    {
-                        errors.title?
-                        <p style={{color:"red"}}>{errors.title.message}</p>
-                        :
-                        null
-                    }
+        {
+                    !errors.title?
+                <div className="form-floating mb-3">
+                    
+                    <input type="text" className="form-control" id="floatingInput" placeholder="Title" name="title" value={video.title} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Title:</span></label>
+                    
+                        
+            
+                </div>:
+                <div className="form-floating mb-3"> 
+                    <input type="text" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Title" name="title" value={video.title} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Invalid Title</span></label>
                 </div>
-                <div>
-                    <label>Description:</label>
-                    <input type="text" name="description" value={video.description} onChange={(e)=>{inputHandler(e)}}/>
+                }
+                <div className="form-floating">
+                    <textarea className="form-control" placeholder="Description" id="floatingTextarea2" style={{height:100}} name="description" value={video.description} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingTextarea2"><span style={{color:"grey"}}>Description:</span></label>
+                   
                 </div>
-                <div>
-                    <label>First Name:</label>
-                    <input type="text" name="first" value={first} onChange={(e)=>{setFirst(e.target.value)}}/>
+                <div className="form-floating mb-3">
+                    
+                    <input style={{marginTop:20}} type="text" className="form-control" id="floatingInput" placeholder="Thumbnail URL" name="thumbnailURL" value={video.thumbnailURL} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}>Image Link for thumbnail:</span></label>
+                    
+                        
+            
                 </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input type="text" name="last" value={last} onChange={(e)=>{setLast(e.target.value)}}/>
-                    {
+                <h2 style={{color:"white"}}>Comedian</h2>
+                       {
                         errors.comedian?
-                        <p style={{color:"red"}}>{errors.comedian.message}</p>
-                        :
-                        null
-                    }
+                <div className="row" style={{marginTop:20}}>
+                <div className="col form-floating mb-3">
+                    <input id="floatingInputInvalid" className="form-control is-invalid" placeholder="First Name"type="text" name="first" value={first} onChange={(e)=>{setFirst(e.target.value)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Name Invalid</span></label>
+
                 </div>
-                <div>
-                    <label>YouTube URL:</label>
-                    <input type="text" name="videoURL" value={video.videoURL} onChange={(e)=>{inputHandler(e)}}/>
+                <div className="col form-floating mb-3">
+                    <input id="floatingInputInvalid" className="form-control is-invalid" placeholder="Last Name" type="text" name="last" value={last} onChange={(e)=>{setLast(e.target.value)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}> Name Invalid</span></label>
+
+                   
+                        
+             
+                </div>
+                </div>           
+                :
+                <div  className="row" style={{marginTop:20}}>
+                    <div className="col form-floating mb-3">
+                    <input id="floatingInput" className="form-control" placeholder="First Name"type="text" name="first" value={first} onChange={(e)=>{setFirst(e.target.value)}}/>
+                    <label for="floatingInput"><span style={{color:"gray"}}> First Name:</span></label>
+
+                </div>
+                <div className="col form-floating mb-3">
+                    <input id="floatingInput" className="form-control" placeholder="Last Name" type="text" name="last" value={last} onChange={(e)=>{setLast(e.target.value)}}/>
+                    <label for="floatingInput"><span style={{color:"grey"}}> Last Name:</span></label>
+
+                   
+                        
+             
+                    </div>
+                </div>
+                    }
+                    <h2 style={{color:"white"}}>YouTube Url</h2>
+                    <p style={{color:"yellowgreen"}}>*Right click youtube video and select either copy link or copy video url</p>
+                    
                     {
-                        errors.videoURL?
-                        <p style={{color:"red"}}>{errors.videoURL.message}</p>
+                        !errors.videoURL?
+                <div className="input-group form-floating mb-3">
+                    
+                    <input type="text" className="form-control" id="floatingInput" placeholder="Youtube Url" name="videoURL" value={video.videoURL} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInput"><span style={{color:"gray"}}>ex: https://www.youtube.com/watch?(random letters)</span></label>
+                    <button style={{color:"white"}} className="btn btn-warning" type="submit" id="button-addon2" onMouseEnter={()=>{modifyHandler()}}>Upload</button>
+                    
+                    </div>   
                         :
-                        null
+                        <div className="input-group form-floating mb-3">
+                            <input type="text" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Youtube Url" name="videoURL" value={video.videoURL} onChange={(e)=>{inputHandler(e)}}/>
+                    <label for="floatingInputInvalid"><span style={{color:"red"}}>YouTube URL:</span></label>
+                    <button style={{color:"white"}} className="btn btn-warning" type="submit" id="button-addon2" onMouseEnter={()=>{modifyHandler()}}>Upload</button>
+                        </div>
+
                     }
-                </div>
+                
             
-            <button type="submit" onMouseEnter={()=>{modifyHandler()}}>Upload</button>
+            
             
         </form>
+        </div>
         :
-        <p>please log in</p>
+        navi("/")
         }  
             
         </div>

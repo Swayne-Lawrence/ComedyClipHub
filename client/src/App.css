@@ -43,9 +43,16 @@
 #mainContainer{
   margin: 0px auto;
   display: flex;
-  background-color: aqua;
+  background-color:midnightblue;
   justify-content: center;
-  height: 1000px;
+  height: auto;
+  
+}
+#mainContainerSearch{
+  margin: 0px auto;
+  background-color:midnightblue;
+  justify-content: center;
+  height: auto;
   
 }
 #mainContainerReg{
@@ -94,4 +101,22 @@ height: 100px;
 #regClips{
   position: relative;
   left: 110px;
+}
+
+#uploadForm{
+  position: relative;
+  top: 100px;
+  left: 200px;
+  width: 600px;
+}
+#tagForm{
+  position: relative;
+  top: 200px;
+  right: 500px;
+  width: 370px;
+}
+#delEdit{
+  position: relative;
+  left: 85px;
+  bottom: 40px;
 }

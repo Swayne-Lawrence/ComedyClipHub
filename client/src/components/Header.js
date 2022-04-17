@@ -1,16 +1,22 @@
-import React,{useState,ueEffect} from "react";
+import React,{useState,ueEffect, useEffect} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 
 const Header=(props)=>{
-    const {videoList,logged}=props;
-    
+    const {logged}=props;
+    const [videoList,setVideoList]=useState([]);
     const [searchItem,setSearchItem]=useState("");
     const[ vid,setVid]=useState({});
     
-    
+    useEffect(()=>{
+        axios.get("http://localhost:8000/api/videos",{withCredentials:true})
+        .then((res)=>{
+            console.log(res.data);
+            setVideoList(res.data)
+        }).catch((err)=>{console.log(err)})
+    },[])
 
     const navi= useNavigate()
     const submitHandler=(e)=>{
@@ -20,7 +26,7 @@ const Header=(props)=>{
             withCredentials:true
         }).then((res)=>{
             console.log(res.data)
-            navi("/login")
+            navi("/")
         }).catch((err)=>{console.log(err)})
     }
 

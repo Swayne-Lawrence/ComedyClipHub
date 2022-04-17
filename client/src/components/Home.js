@@ -8,6 +8,8 @@ const Home= (props)=>{
     const navi= useNavigate();
     const [logged,setLogged]=useState({})
     const [videoList, setVideoList]=useState([]);
+    const [user,setUser]=useState({});
+    const [userList,setUserList]=useState([])
     
     useEffect(()=>{
         axios.get("http://localhost:8000/api/users/logged",{withCredentials:true})
@@ -25,53 +27,110 @@ const Home= (props)=>{
 
         }).catch((err)=>{console.log(err)})
         
-        
-
-    },[])
-
-    const deleteVid=(id)=>{
-        axios.delete(`http://localhost:8000/api/videos/${id}`)
+        axios.get("http://localhost:8000/api/users",{withCredentials:true})
         .then((res)=>{
             console.log(res.data)
-            setVideoList(videoList.filter((video=>video._id != id)))
-        }).catch((err)=>{console.log(err)})
-    }
+            setUserList(res.data)
+        })
 
-
+    },[])
 
     return(
         <div >
             <div id="mainContainer">
            {
             logged._id?
-            <div>
-            <Header videoList={videoList} logged={logged} />
-            <p>Hello</p>
+            <div >
+            <Header  logged={logged} />
+            <h1 style={{color:"white",textDecorationLine:"underline"}}>All Clips</h1>
+            <div className="row row-cols-1 row-cols-md-3 g-4 " style={{width:1200,marginTop:30}}>
+               
             {
                 videoList.map((video,index)=>{
+                        
                     return(
-                        <div>
-                            <Link to={`/video/${video._id}`}>{video.title}</Link>
+                             <div className="col" > 
+                             { 
+                                !video.thumbnailURL?
+                        <div className="card" style={{
+                            width:280,
+                            height: 360,
+                            backgroundColor:"steelblue"
+                            }}>
+                            <img style={{height:150,width:200, position:"relative",left:50
+                            }} src="https://cdn0.iconfinder.com/data/icons/party-human-1/66/34-512.png" className="card-img-top"/>
+                            <div className="card-body">
+                                <h5 className="card-title">{video.title}</h5>
+                                <div ><p style={{marginTop:-5}}>Comedian: <strong>{video.comedian}</strong></p>
+                                <p style={{marginTop:-20}}> Uploaded by: <span style={{color:"yellow"}}>{video.username}</span></p>
+                                </div>
+                                
+                            
+                                
+                                <button style={{color:"white",
+                            position:"relative",
+                            left:90,
+                            top:50
+                            
+                            }} className="btn btn-outline-warning" onClick={()=>{navi(`/video/${video._id}`)}}>Watch</button>
                             {
                                 logged._id==video.createdBy?
-                                <div>
-                            <button onClick={()=>{deleteVid(video._id)}} >Delete</button>
-                            <Link to={`/edit/${video._id}`}>Edit</Link>
+                                <div id="delEdit">
+                            
+                            <button className="btn btn-outline-dark"  onClick={()=>{navi(`/edit/${video._id}`)}}>Manage</button>
                             </div>
                             :
                             null
                             }
+                            </div>
+                        </div>: 
+                            <div className="card" style={{
+                            width:280,
+                            height: 360,
+                            backgroundColor:"steelblue"
+                            }}>
+                            <img style={{height:160,width:250, position:"relative",left:15
+                            }} src={video.thumbnailURL} className="card-img-top"/>
+                            <div className="card-body">
+                                <h5 className="card-title">{video.title}</h5>
+                                <div ><p style={{marginTop:-5}}>Comedian: <strong>{video.comedian}</strong></p>
+                                <p style={{marginTop:-20}}> Uploaded by: <span style={{color:"yellow"}}>{video.username}</span></p>
+                                </div>
+                                
+                            
+                                
+                                <button style={{color:"white",
+                            position:"relative",
+                            left:90,
+                            top:50
+                            
+                            }} className="btn btn-outline-warning" onClick={()=>{navi(`/video/${video._id}`)}}>Watch</button>
+                            {
+                                logged._id==video.createdBy?
+                                <div id="delEdit">
+                            
+                            <button className="btn btn-outline-dark"  onClick={()=>{navi(`/edit/${video._id}`)}}>Manage</button>
+                            </div>
+                            :
+                            null
+                            }
+                            </div>
+                        </div>}
                         </div>
-
                     )
                 })
             }
             
-            
-            </div>:
+            </div>
 
             
-                navi("/login")
+            
+            </div>
+            
+            :
+
+            
+                navi("/")
             
 
             

@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react";
 import axios from "axios";
 import { Link,useNavigate,useParams } from "react-router-dom";
+import Header from "./Header";
 
 const Tags=(props)=>{
     const [tags,setTags]=useState([]);
@@ -11,8 +12,15 @@ const Tags=(props)=>{
     const [str, setStr]=useState("");
     const [cont,setCont]=useState(false);
     const navi = useNavigate(); 
+    const [logged,setLogged]=useState({});
 
     useEffect(()=>{
+        axios.get("http://localhost:8000/api/users/logged",{withCredentials:true}).then((res)=>{
+            console.log(res.data);
+            setLogged(res.data);
+        }).catch((err)=>{
+            console.log(err)
+        })
         axios.get(`http://localhost:8000/api/videos/${id}`,{withCredentials:true}).then((res)=>{
             console.log(res.data);
             setVideo(res.data)
@@ -28,7 +36,7 @@ const Tags=(props)=>{
                 console.log(str)
                 axios.put(`http://localhost:8000/api/videos/${id}`,video,{withCredentials:true}).then((res)=>{
                     console.log(res.data)
-                    
+
                        
                 }).catch((err)=>{console.log(err)})
                 
@@ -59,18 +67,31 @@ const Tags=(props)=>{
 
 
     return(
-        <div>
-            <form onSubmit={(e)=>{submitHandler(e)}}>
-                <div>
-                    <p style={{color:"grey"}}>{str}</p>
-                    <label>Tags</label>
-                    <input value={word} type="text" onChange={(e)=>{setWord(e.target.value)}}/>
+        <div id="mainContainer">
+            
+            <div  style={{
+                position:"relative",
+                left:200,
+                height:2000
+                            }}>
+                <Header  logged={logged}/>
+            </div>
+            <div>
+            <h1 style={{color:"white",position:"relative",
+        top:150,right:400}}>Add Tags</h1>
+            <form  id="tagForm" onSubmit={(e)=>{submitHandler(e)}}>
+                 <p style={{color:"white"}}>{str}</p> 
+                <div className="input-group">
+                   
+                    
+                    <input value={word} type="text"  className="form-control" placeholder="Tags" onChange={(e)=>{setWord(e.target.value)}}/>
+                <button id="addBtn" className="btn btn-primary" onClick={()=>{arrayHandler()}}>Add</button>
+                <button className="btn btn-warning" style={{color:"white"}} type="submit" onClick={()=>{setCont(true)}}>Continue</button>
                 </div>
-                <button onClick={()=>{arrayHandler()}}>Add</button>
-                <button type="submit" onClick={()=>{setCont(true)}}>Continue</button>
+
                 
             </form>
-           
+           </div>
         </div>
     );
 }
