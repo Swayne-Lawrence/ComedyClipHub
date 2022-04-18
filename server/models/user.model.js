@@ -17,8 +17,8 @@ const UserSch= new mongoose.Schema({
         minlength:[8,"Password must be more then 8 characters"]
     },
     profilePic:{
-        type:String,
-        minlength:[10,"Enter proper url"]
+        type:String
+        
         
     }
 },{timestamps:true});

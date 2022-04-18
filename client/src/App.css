@@ -48,11 +48,20 @@
   height: auto;
   
 }
+#mainContainerVideo{
+  margin: 0px auto;
+  background-color:midnightblue;
+  justify-content: center;
+  height: auto;
+  width: 3000px;
+  
+}
 #mainContainerSearch{
   margin: 0px auto;
   background-color:midnightblue;
   justify-content: center;
   height: auto;
+  width: 3000px;
   
 }
 #mainContainerReg{

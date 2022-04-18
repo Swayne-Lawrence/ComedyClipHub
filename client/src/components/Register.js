@@ -11,7 +11,9 @@ const Register=(props)=>{
         profilePic:""
     }
     )
+    const [userList,setUserList]=useState([]);
     const [logged,setLogged]=useState({})
+    const [exist,setExist]=useState(false)
 
     useEffect(()=>{
         axios.get("http://localhost:8000/api/users/logged",{withCredentials:true}).then((res)=>{
@@ -20,6 +22,10 @@ const Register=(props)=>{
         }).catch((err)=>{
             console.log(err)
         })
+        axios.get("http://localhost:8000/api/users").then((res)=>{
+            console.log(res.data)
+            setUserList(res.data)
+        }).catch((err)=>{console.log(err)})
     },[])
 
     const navi= useNavigate();
@@ -32,9 +38,28 @@ const Register=(props)=>{
     }
 
     const [error,setError]=useState({});
+    const checkUnique=()=>{
+        userList.map((u,index)=>{
+            if(u.email==user.email){
+                setExist(true)
+                return;
+            }
+            
+        })
+    }
 
     const submitHandler=(e)=>{
         e.preventDefault();
+        
+        console.log(exist)
+        if(exist==true){
+            console.log("but its true")
+            alert("email already exist")
+            window.location.reload(false);
+
+            return;
+        }
+
         axios.post("http://localhost:8000/api/users/register",user,{withCredentials: true}).then((res)=>{
             console.log(res.data);
            axios.post("http://localhost:8000/api/users/login",user,{withCredentials:true}).then((res)=>{
@@ -130,23 +155,9 @@ const Register=(props)=>{
                     <label for="floatingInputInvalid"><span style={{color:"red"}}>Must match password</span></label>
                 </div>
                 }
- {
-                    !error.profilePic?
-                <div className="form-floating mb-3">
-                    
-                    <input type="text" className="form-control" id="floatingInput" placeholder="Profile Picture" name="profilePic" value={user.profilePic} onChange={(e)=>{inputHandler(e)}}/>
-                    <label for="floatingInput"><span style={{color:"grey"}}>Profile Picture:</span></label>
-                    
-                        
-            
-                </div>:
-                <div className="form-floating mb-3"> 
-                    <input type="text" className="form-control is-invalid" id="floatingInputInvalid" placeholder="Profile Picture" name="profilePic" value={user.profilePic} onChange={(e)=>{inputHandler(e)}}/>
-                    <label for="floatingInputInvalid"><span style={{color:"red"}}>Please enter a valid link</span></label>
-                </div>
-                }
+ 
                 
-                <button className="btn btn-dark" type="submit">Register</button>
+                <button onMouseEnter={()=>{checkUnique()}} className="btn btn-dark" type="submit">Register</button>
             </form>
             :
             navi("/home")
